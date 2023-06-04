@@ -60,7 +60,7 @@ class Container:
     envs = [f"-e {key}={value}" for (key, value) in self.__envs]
     volumes = [f"-v {source}:{target}" for (source, target) in self.__volumes]
     ports = [f"-p {source}:{target}/{ptype}" for (source, target, ptype) in self.__ports]
-    options = [f"--{name}:{value}" for (name, value) in self.__options]
+    options = [f"--{name} {value}" for (name, value) in self.__options]
 
     self.__image.pull()
     Shell.Execute(f"""
@@ -68,6 +68,7 @@ class Container:
       {" ".join(envs)} \
       {" ".join(volumes)} \
       {" ".join(ports)} \
+      {" ".join(options)} \
       {self.__image.name()}
     """)
 
