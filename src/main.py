@@ -1,6 +1,7 @@
 #! /usr/bin/env python3
 
 import json
+import os
 
 from yacli import CLI, Command
 from container import Container
@@ -8,6 +9,8 @@ from container import Container
 def open_container(file_path: str) -> Container:
   if not file_path.endswith(".json"):
     raise Exception("Invalid file extesion, try a .json")
+  if not os.path.isfile(file_path):
+    raise Exception("Provided file do not exists")
 
   container: Container
   with open(file_path) as file:
