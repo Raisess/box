@@ -20,7 +20,8 @@ def open_container(file_path: str) -> Container:
       image_name=data.get("image"),
       envs=data.get("envs"),
       volumes=data.get("volumes"),
-      ports=data.get("ports")
+      ports=data.get("ports"),
+      options=data.get("options")
     )
 
   return container

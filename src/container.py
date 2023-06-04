@@ -4,6 +4,7 @@ from shell import Shell
 Env = tuple[str, str]
 Volume = tuple[str, str]
 Port = tuple[int, int, str]
+Option = tuple[str, str]
 
 class Container:
   @staticmethod
@@ -12,7 +13,8 @@ class Container:
     image_name: str,
     envs: list[Env] = [],
     volumes: list[Volume] = [],
-    ports: list[Port] = []
+    ports: list[Port] = [],
+    options: list[Option] = []
   ) -> "Container":
     container = Container(name, Image(image_name))
     for env in envs:
@@ -21,6 +23,8 @@ class Container:
       container.set_volume(volume)
     for port in ports:
       container.set_port(port)
+    for option in options:
+      container.set_option(option)
 
     return container
 
@@ -30,6 +34,7 @@ class Container:
     self.__envs = []
     self.__ports = []
     self.__volumes = []
+    self.__options = []
 
   def name(self) -> str:
     return self.__name
@@ -43,10 +48,14 @@ class Container:
   def set_port(self, value: Port) -> None:
     self.__ports.append(value)
 
+  def set_option(self, value: Option) -> None:
+    self.__options.append(value)
+
   def create(self) -> None:
-    envs = [f"-e {env[0]}={env[1]}" for env in self.__envs]
-    volumes = [f"-v {volume[0]}:{volume[1]}" for volume in self.__volumes]
-    ports = [f"-p {port[0]}:{port[1]}/{port[2]}" for port in self.__ports]
+    envs = [f"-e {key}={value}" for (key, value) in self.__envs]
+    volumes = [f"-v {source}:{target}" for (source, target) in self.__volumes]
+    ports = [f"-p {source}:{target}/{ptype}" for (source, target, ptype) in self.__ports]
+    options = [f"--{name}:{value}" for (name, value) in self.__options]
 
     self.__image.pull()
     Shell.Execute(f"""
