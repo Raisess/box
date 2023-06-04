@@ -44,16 +44,16 @@ class Container:
     self.__ports.append(value)
 
   def create(self) -> None:
-    envs = [f"{env[0]}={env[1]}" for env in self.__envs]
-    volumes = [f"{volume[0]}:{volume[1]}" for volume in self.__volumes]
-    ports = [f"{port[0]}:{port[1]}/{port[2]}" for port in self.__ports]
+    envs = [f"-e {env[0]}={env[1]}" for env in self.__envs]
+    volumes = [f"-v {volume[0]}:{volume[1]}" for volume in self.__volumes]
+    ports = [f"-p {port[0]}:{port[1]}/{port[2]}" for port in self.__ports]
 
     self.__image.pull()
     Shell.Execute(f"""
       podman container create --name {self.__name} \
-      {"-e ".join(envs)} \
-      {"-v ".join(volumes)} \
-      {"-p ".join(ports)} \
+      {" ".join(envs)} \
+      {" ".join(volumes)} \
+      {" ".join(ports)} \
       {self.__image.name()}
     """)
 
