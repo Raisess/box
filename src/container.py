@@ -11,20 +11,25 @@ class Container:
   def Open(
     name: str,
     image_name: str,
-    envs: list[Env] = [],
-    volumes: list[Volume] = [],
-    ports: list[Port] = [],
-    options: list[Option] = []
+    envs: list[Env] = None,
+    volumes: list[Volume] = None,
+    ports: list[Port] = None,
+    options: list[Option] = None
   ) -> "Container":
     container = Container(name, Image(image_name))
-    for env in envs:
-      container.set_env(env)
-    for volume in volumes:
-      container.set_volume(volume)
-    for port in ports:
-      container.set_port(port)
-    for option in options:
-      container.set_option(option)
+
+    if envs:
+      for env in envs:
+        container.set_env(env)
+    if volumes:
+      for volume in volumes:
+        container.set_volume(volume)
+    if ports:
+      for port in ports:
+        container.set_port(port)
+    if options:
+      for option in options:
+        container.set_option(option)
 
     return container
 
