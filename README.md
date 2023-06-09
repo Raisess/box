@@ -7,10 +7,8 @@ A simple CLI that helps you to create containers using podman.
 Start creating a json file like this:
 
 ```json
-{
-    "name": "hello-world",
-    "network": "network",
-    "containers": {
+[
+    {
         "name": "hello-world",
         "image": "docker.io/library/hello-world:latest",
         "env": [
@@ -21,9 +19,9 @@ Start creating a json file like this:
         ],
         "ports": [
             [8080, 80, "tcp"]
-        ],
+        ]
     }
-}
+]
 ```
 
 - This is an ilustractive example.

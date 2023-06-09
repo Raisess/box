@@ -13,25 +13,23 @@ def init_context(file_path: str) -> Context:
   if not os.path.isfile(file_path):
     raise Exception("Provided file do not exists")
 
-  name = None
-  network = None
   containers = []
   with open(file_path) as file:
     data = json.loads(file.read())
-    name = data.get("name")
-    network = data.get("network")
-    if data.get("containers"):
-      for item in data.get("containers"):
-        containers.append(Container.Init(
-          name=item.get("name") or [],
-          image_name=item.get("image") or [],
-          envs=item.get("envs") or [],
-          volumes=item.get("volumes") or [],
-          ports=item.get("ports") or [],
-          options=item.get("options") or []
-        ))
+    if type(data) != list:
+      raise Exception("Inalid file format")
 
-  return Context(name, network, containers)
+    for item in data:
+      containers.append(Container.Init(
+        name=item.get("name"),
+        image_name=item.get("image"),
+        envs=item.get("envs") or [],
+        volumes=item.get("volumes") or [],
+        ports=item.get("ports") or [],
+        options=item.get("options") or []
+      ))
+
+  return Context(containers)
 
 
 class Create(Command):
