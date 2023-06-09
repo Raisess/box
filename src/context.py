@@ -12,13 +12,15 @@ class Context:
       Shell.Execute(f"podman network create {self.__network}")
 
     for container in self.__containers:
-      container.set_option(("net", self.__network))
+      if self.__network:
+        container.set_option(("net", self.__network))
       container.create()
 
   def update(self) -> None:
     for container in self.__containers:
       container.delete()
-      container.set_option(("net", self.__network))
+      if self.__network:
+        container.set_option(("net", self.__network))
       container.create()
 
   def delete(self) -> None:
