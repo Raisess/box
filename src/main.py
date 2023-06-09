@@ -5,26 +5,33 @@ import os
 
 from yacli import CLI, Command
 from container import Container
+from context import Context
 
-def init_container(file_path: str) -> Container:
+def init_context(file_path: str) -> Context:
   if not file_path.endswith(".json"):
     raise Exception("Invalid file extesion, try a .json")
   if not os.path.isfile(file_path):
     raise Exception("Provided file do not exists")
 
-  container: Container
+  name = None
+  network = None
+  containers = []
   with open(file_path) as file:
     data = json.loads(file.read())
-    container = Container.Init(
-      name=data.get("name") or [],
-      image_name=data.get("image") or [],
-      envs=data.get("envs") or [],
-      volumes=data.get("volumes") or [],
-      ports=data.get("ports") or [],
-      options=data.get("options") or []
-    )
+    name = data.get("name")
+    network = data.get("network")
+    if data.get("containers"):
+      for item in data.get("containers"):
+        containers.append(Container.Init(
+          name=item.get("name") or [],
+          image_name=item.get("image") or [],
+          envs=item.get("envs") or [],
+          volumes=item.get("volumes") or [],
+          ports=item.get("ports") or [],
+          options=item.get("options") or []
+        ))
 
-  return container
+  return Context(name, network, containers)
 
 
 class Create(Command):
@@ -32,8 +39,8 @@ class Create(Command):
     super().__init__("create", "Create a new container", args_len=1)
 
   def handle(self, args: list[str]) -> None:
-    container = init_container(args[0])
-    container.create()
+    context = init_context(args[0])
+    context.create()
 
 
 class Delete(Command):
@@ -41,8 +48,8 @@ class Delete(Command):
     super().__init__("delete", "Delete a container", args_len=1)
 
   def handle(self, args: list[str]) -> None:
-    container = init_container(args[0])
-    container.delete()
+    context = init_context(args[0])
+    context.delete()
 
 
 class Update(Command):
@@ -50,8 +57,8 @@ class Update(Command):
     super().__init__("update", "Update a container", args_len=1)
 
   def handle(self, args: list[str]) -> None:
-    container = init_container(args[0])
-    container.update()
+    context = init_context(args[0])
+    context.update()
 
 
 if __name__ == "__main__":

@@ -70,8 +70,3 @@ class Container:
   def delete(self) -> None:
     Shell.Execute(f"podman container rm {self.__name}")
     self.__image.delete()
-
-  def update(self) -> None:
-    self.delete()
-    self.__image.pull()
-    self.create()

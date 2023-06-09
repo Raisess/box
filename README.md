@@ -9,16 +9,20 @@ Start creating a json file like this:
 ```json
 {
     "name": "hello-world",
-    "image": "docker.io/library/hello-world:latest",
-    "env": [
-        ["TZ", "Etc/UTC"]
-    ],
-    "volumes": [
-        ["/my_machine/dir", "/container/dir"]
-    ],
-    "ports": [
-        [8080, 80, "tcp"]
-    ],
+    "network": "network",
+    "containers": {
+        "name": "hello-world",
+        "image": "docker.io/library/hello-world:latest",
+        "env": [
+            ["TZ", "Etc/UTC"]
+        ],
+        "volumes": [
+            ["/my_machine/dir", "/container/dir"]
+        ],
+        "ports": [
+            [8080, 80, "tcp"]
+        ],
+    }
 }
 ```
 
