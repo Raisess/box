@@ -1,5 +1,4 @@
 from container import Container
-from shell import Shell
 
 class Context:
   def __init__(self, containers: list[Container]):
