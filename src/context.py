@@ -1,4 +1,5 @@
-from container import Container
+from api.podman import Podman
+from container import Container, Env, Option, Port, Volume
 from image import Image
 
 class Context:
@@ -11,7 +12,8 @@ class Context:
     ports: list[Port] = [],
     options: list[Option] = []
   ) -> Container:
-    container = Container(name, Image(image_name))
+    image = Image(Podman.Image(), image_name)
+    container = Container(Podman.Container(), name, image)
     for env in envs:
       container.set_env(env)
     for volume in volumes:

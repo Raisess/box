@@ -1,15 +1,16 @@
 import os
 
+from api.base import Api
 from image import Image
-from util.shell import Shell
 
 Env = tuple[str, str]
-Volume = tuple[str, str]
-Port = tuple[int, int, str]
 Option = tuple[str, str]
+Port = tuple[int, int, str]
+Volume = tuple[str, str]
 
 class Container:
-  def __init__(self, name: str, image: Image):
+  def __init__(self, provider: Api.Container, name: str, image: Image):
+    self.__provider = provider
     self.__name = name
     self.__image = image
     self.__envs = []
@@ -42,15 +43,12 @@ class Container:
     options = [f"--{name} {value}" for (name, value) in self.__options]
 
     self.__image.pull()
-    Shell.Execute(f"""
-      podman container create --name {self.__name} \
-      {" ".join(envs)} \
-      {" ".join(volumes)} \
-      {" ".join(ports)} \
-      {" ".join(options)} \
-      {self.__image.name()}
-    """)
+    self.__provider.create(
+      self.__name,
+      self.__image.name(),
+      [*envs, *volumes, *ports, *options]
+    )
 
   def delete(self) -> None:
-    Shell.Execute(f"podman container rm {self.__name}")
+    self.__provider.delete(self.__name)
     self.__image.delete()
