@@ -4,14 +4,13 @@ import json
 import os
 
 from yacli import CLI, Command
-from container import Container
 from context import Context
 
 def init_context(file_path: str) -> Context:
-  if not file_path.endswith(".json"):
-    raise Exception("Invalid file extesion, try a .json")
   if not os.path.isfile(file_path):
     raise Exception("Provided file do not exists")
+  if not file_path.endswith(".json"):
+    raise Exception("Invalid file extesion, try a .json")
 
   containers = []
   with open(file_path) as file:
@@ -20,7 +19,7 @@ def init_context(file_path: str) -> Context:
       raise Exception("Inalid file format")
 
     for item in data:
-      containers.append(Container.Init(
+      containers.append(Context.PrepareContainer(
         name=item.get("name"),
         image_name=item.get("image"),
         envs=item.get("envs") or [],
