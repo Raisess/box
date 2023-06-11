@@ -1,7 +1,7 @@
 import os
 
 from image import Image
-from shell import Shell
+from util.shell import Shell
 
 Env = tuple[str, str]
 Volume = tuple[str, str]

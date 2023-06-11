@@ -1,4 +1,4 @@
-from shell import Shell
+from util.shell import Shell
 
 class Image:
   def __init__(self, name: str):
