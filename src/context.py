@@ -32,6 +32,14 @@ class Context:
     for container in self.__containers:
       container.create()
 
+  def start(self) -> None:
+    for container in self.__containers:
+      container.start()
+
+  def stop(self) -> None:
+    for container in self.__containers:
+      container.stop()
+
   def update(self) -> None:
     for container in self.__containers:
       container.delete()

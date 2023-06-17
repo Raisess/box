@@ -44,11 +44,18 @@ class Container:
 
     self.__image.pull()
     self.__provider.create(
-      self.__name,
+      self.name(),
       self.__image.name(),
       [*envs, *volumes, *ports, *options]
     )
 
+  def start(self) -> None:
+    self.__provider.start(self.name())
+
+  def stop(self) -> None:
+    self.__provider.stop(self.name())
+
   def delete(self) -> None:
-    self.__provider.delete(self.__name)
+    self.stop()
+    self.__provider.delete(self.name())
     self.__image.delete()

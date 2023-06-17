@@ -9,6 +9,12 @@ class Podman(Api):
     def delete(self, name: str) -> None:
       Shell.Execute(f"podman container rm {name}")
 
+    def start(self, name: str) -> None:
+      Shell.Execute(f"podman container start {name}")
+
+    def stop(self, name: str) -> None:
+      Shell.Execute(f"podman container stop {name}")
+
 
   class Image(Api.Image):
     def pull(self, name: str, version: str) -> None:

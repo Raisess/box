@@ -6,6 +6,12 @@ class Api:
     def delete(self, name: str) -> None:
       raise NotImplemented()
 
+    def start(self, name: str) -> None:
+      raise NotImplemented()
+
+    def stop(self, name: str) -> None:
+      raise NotImplemented()
+
 
   class Image:
     def pull(self, name: str, version: str) -> None:
