@@ -5,7 +5,7 @@ from image import Image
 
 Env = tuple[str, str]
 Option = tuple[str, str]
-Port = tuple[int, int, str]
+Port = tuple[int | str, int, str]
 Volume = tuple[str, str]
 
 class Container:
