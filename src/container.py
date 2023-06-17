@@ -56,6 +56,5 @@ class Container:
     self.__provider.stop(self.name())
 
   def delete(self) -> None:
-    self.stop()
     self.__provider.delete(self.name())
     self.__image.delete()
