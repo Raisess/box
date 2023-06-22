@@ -6,7 +6,7 @@ import os
 from yacli import CLI, Command
 from context import Context
 
-def init_context(file_path: str) -> Context:
+def init_context(file_path: str, container_name: str | None) -> Context:
   if not os.path.isfile(file_path):
     raise Exception("Provided file do not exists")
   if not file_path.endswith(".json"):
@@ -18,15 +18,31 @@ def init_context(file_path: str) -> Context:
     if type(data) != list:
       raise Exception("Inalid file format")
 
-    for item in data:
-      containers.append(Context.PrepareContainer(
-        name=item.get("name"),
-        image_name=item.get("image"),
-        envs=item.get("envs") or [],
-        volumes=item.get("volumes") or [],
-        ports=item.get("ports") or [],
-        options=item.get("options") or []
-      ))
+    if container_name:
+      for item in data:
+        if container_name == item.get("name"):
+          containers.append(Context.PrepareContainer(
+            name=item.get("name"),
+            image_name=item.get("image"),
+            envs=item.get("envs") or [],
+            volumes=item.get("volumes") or [],
+            ports=item.get("ports") or [],
+            options=item.get("options") or []
+          ))
+          continue
+    else:
+      for item in data:
+        containers.append(Context.PrepareContainer(
+          name=item.get("name"),
+          image_name=item.get("image"),
+          envs=item.get("envs") or [],
+          volumes=item.get("volumes") or [],
+          ports=item.get("ports") or [],
+          options=item.get("options") or []
+        ))
+
+  if len(containers) == 0:
+    raise Exception("No valid containers in the context")
 
   return Context(containers)
 
@@ -36,7 +52,9 @@ class Create(Command):
     super().__init__("create", "Create new containers", args_len=1)
 
   def handle(self, args: list[str]) -> None:
-    context = init_context(args[0])
+    file_path = args[0]
+    container_name = args[1] if len(args) > 1 else None
+    context = init_context(file_path, container_name)
     context.create()
 
 
@@ -45,7 +63,9 @@ class Start(Command):
     super().__init__("start", "Start containers", args_len=1)
 
   def handle(self, args: list[str]) -> None:
-    context = init_context(args[0])
+    file_path = args[0]
+    container_name = args[1] if len(args) > 1 else None
+    context = init_context(file_path, container_name)
     context.start()
 
 
@@ -54,7 +74,9 @@ class Stop(Command):
     super().__init__("stop", "Stop containers", args_len=1)
 
   def handle(self, args: list[str]) -> None:
-    context = init_context(args[0])
+    file_path = args[0]
+    container_name = args[1] if len(args) > 1 else None
+    context = init_context(file_path, container_name)
     context.stop()
 
 
@@ -63,7 +85,9 @@ class Update(Command):
     super().__init__("update", "Update containers", args_len=1)
 
   def handle(self, args: list[str]) -> None:
-    context = init_context(args[0])
+    file_path = args[0]
+    container_name = args[1] if len(args) > 1 else None
+    context = init_context(file_path, container_name)
     context.update()
 
 
@@ -72,7 +96,9 @@ class Delete(Command):
     super().__init__("delete", "Delete containers", args_len=1)
 
   def handle(self, args: list[str]) -> None:
-    context = init_context(args[0])
+    file_path = args[0]
+    container_name = args[1] if len(args) > 1 else None
+    context = init_context(file_path, container_name)
     context.delete()
 
 
