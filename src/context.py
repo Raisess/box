@@ -1,6 +1,11 @@
+import os
+
+from api.docker import Docker
 from api.podman import Podman
 from container import Container, Env, Option, Port, Volume
 from image import Image
+
+API = os.getenv("API")
 
 class Context:
   @staticmethod
@@ -12,8 +17,14 @@ class Context:
     ports: list[Port] = [],
     options: list[Option] = []
   ) -> Container:
-    image = Image(Podman.Image(), image_name)
-    container = Container(Podman.Container(), name, image)
+    provider = Podman
+    if API:
+      ["docker", "podman"].index(API)
+      if API == "docker":
+        provider = Docker
+
+    image = Image(provider.Image(), image_name)
+    container = Container(provider.Container(), name, image)
     for env in envs:
       container.set_env(env)
     for volume in volumes:
