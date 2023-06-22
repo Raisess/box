@@ -12,6 +12,7 @@ class Context:
   def PrepareContainer(
     name: str,
     image_name: str,
+    command: str | None,
     envs: list[Env] = [],
     volumes: list[Volume] = [],
     ports: list[Port] = [],
@@ -24,7 +25,7 @@ class Context:
         provider = Docker
 
     image = Image(provider.Image(), image_name)
-    container = Container(provider.Container(), name, image)
+    container = Container(provider.Container(), name, image, command)
     for env in envs:
       container.set_env(env)
     for volume in volumes:

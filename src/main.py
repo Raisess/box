@@ -24,6 +24,7 @@ def init_context(file_path: str, container_name: str | None) -> Context:
           containers.append(Context.PrepareContainer(
             name=item.get("name"),
             image_name=item.get("image"),
+            command=item.get("command"),
             envs=item.get("envs") or [],
             volumes=item.get("volumes") or [],
             ports=item.get("ports") or [],
@@ -35,6 +36,7 @@ def init_context(file_path: str, container_name: str | None) -> Context:
         containers.append(Context.PrepareContainer(
           name=item.get("name"),
           image_name=item.get("image"),
+          command=item.get("command"),
           envs=item.get("envs") or [],
           volumes=item.get("volumes") or [],
           ports=item.get("ports") or [],

@@ -3,8 +3,8 @@ from util.shell import Shell
 
 class Docker(Api):
   class Container(Api.Container):
-    def create(self, name: str, image: str, args: list[str]) -> None:
-      Shell.Execute(f"docker container create --name {name} {' '.join(args)} {image}")
+    def create(self, name: str, image: str, command: str, args: list[str]) -> None:
+      Shell.Execute(f"docker container create --name {name} {' '.join(args)} {image} {command}")
 
     def delete(self, name: str) -> None:
       Shell.Execute(f"docker container rm {name}")

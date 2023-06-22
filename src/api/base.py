@@ -1,6 +1,6 @@
 class Api:
   class Container:
-    def create(self, name: str, image: str, args: list[str]) -> None:
+    def create(self, name: str, image: str, command: str, args: list[str]) -> None:
       raise NotImplemented()
 
     def delete(self, name: str) -> None:
