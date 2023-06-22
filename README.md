@@ -29,7 +29,7 @@ Start creating a json file like this:
 To create the container execute the box `create` command:
 
 ```shell
-box create <your_file>.json
+box create <YOUR_FILE>.json
 ```
 
-- All others commands are used like this, `box command <your_file>.json`, use the `help` command for more info.
+- All others commands are used like this, `box command <YOUR_FILE>.json [CONTAINER]`, use the `help` command for more info.

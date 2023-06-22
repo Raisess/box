@@ -9,10 +9,11 @@ Port = tuple[int | str, int, str]
 Volume = tuple[str, str]
 
 class Container:
-  def __init__(self, provider: Api.Container, name: str, image: Image):
+  def __init__(self, provider: Api.Container, name: str, image: Image, command: str | None):
     self.__provider = provider
     self.__name = name
     self.__image = image
+    self.__command = command
     self.__envs = []
     self.__ports = []
     self.__volumes = []
@@ -25,7 +26,7 @@ class Container:
     self.__envs.append(value)
 
   def set_volume(self, value: Volume) -> None:
-    if not os.path.isdir(value[0]):
+    if not os.path.isdir(value[0]) and not os.path.isfile(value[0]):
       raise Exception(f"Invalid source path: {value[0]}")
 
     self.__volumes.append(value)
@@ -46,6 +47,7 @@ class Container:
     self.__provider.create(
       self.name(),
       self.__image.name(),
+      self.__command or "",
       [*envs, *volumes, *ports, *options]
     )
 

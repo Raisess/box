@@ -1,24 +1,24 @@
 from api.base import Api
 from util.shell import Shell
 
-class Podman(Api):
+class Docker(Api):
   class Container(Api.Container):
     def create(self, name: str, image: str, command: str, args: list[str]) -> None:
-      Shell.Execute(f"podman container create --name {name} {' '.join(args)} {image} {command}")
+      Shell.Execute(f"docker container create --name {name} {' '.join(args)} {image} {command}")
 
     def delete(self, name: str) -> None:
-      Shell.Execute(f"podman container rm {name}")
+      Shell.Execute(f"docker container rm {name}")
 
     def start(self, name: str) -> None:
-      Shell.Execute(f"podman container start {name}")
+      Shell.Execute(f"docker container start {name}")
 
     def stop(self, name: str) -> None:
-      Shell.Execute(f"podman container stop {name}")
+      Shell.Execute(f"docker container stop {name}")
 
 
   class Image(Api.Image):
     def pull(self, name: str, version: str) -> None:
-      Shell.Execute(f"podman image pull {name}:{version}")
+      Shell.Execute(f"docker image pull {name}:{version}")
 
     def delete(self, name: str) -> None:
-      Shell.Execute(f"podman image rm {name}")
+      Shell.Execute(f"docker image rm {name}")
