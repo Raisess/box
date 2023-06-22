@@ -104,6 +104,18 @@ class Delete(Command):
     context.delete()
 
 
+class Restart(Command):
+  def __init__(self):
+    super().__init__("restart", "Restart containers", args_len=1)
+
+  def handle(self, args: list[str]) -> None:
+    file_path = args[0]
+    container_name = args[1] if len(args) > 1 else None
+    context = init_context(file_path, container_name)
+    context.stop()
+    context.start()
+
+
 if __name__ == "__main__":
-  cli = CLI("box", [Create(), Start(), Stop(), Delete(), Update()])
+  cli = CLI("box", [Create(), Start(), Stop(), Delete(), Update(), Restart()])
   cli.handle()
