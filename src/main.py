@@ -16,7 +16,7 @@ def init_context(file_path: str, container_name: str | None) -> Context:
   with open(file_path) as file:
     data = json.loads(file.read())
     if type(data) != list:
-      raise Exception("Inalid file format")
+      raise Exception("Invalid file format")
 
     if container_name:
       for item in data:

@@ -9,7 +9,13 @@ Port = tuple[int | str, int, str]
 Volume = tuple[str, str]
 
 class Container:
-  def __init__(self, provider: Api.Container, name: str, image: Image, command: str | None):
+  def __init__(
+    self,
+    provider: Api.Container,
+    name: str,
+    image: Image,
+    command: str | None
+  ):
     self.__provider = provider
     self.__name = name
     self.__image = image
