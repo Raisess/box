@@ -116,6 +116,20 @@ class Restart(Command):
     context.start()
 
 
+class Serve(Command):
+  def __init__(self):
+    super().__init__("serve", "Start an REST API")
+
+  def handle(self, args: list[str]) -> None:
+    import uvicorn
+    from server import app
+
+    port = args[1] if len(args) > 1 else 8000
+    host = args[2] if len(args) > 2 else "localhost"
+
+    uvicorn.run(app, host=host, port=port)
+
+
 if __name__ == "__main__":
-  cli = CLI("box", [Create(), Start(), Stop(), Delete(), Update(), Restart()])
+  cli = CLI("box", [Create(), Start(), Stop(), Delete(), Update(), Restart(), Serve()])
   cli.handle()

@@ -1,4 +1,5 @@
 import os
+from enum import Enum
 
 from api.base import Api
 from image import Image
@@ -7,6 +8,13 @@ Env = tuple[str, str]
 Option = tuple[str, str]
 Port = tuple[int | str, int, str]
 Volume = tuple[str, str]
+
+class ContainerStatus(Enum):
+  INVALID = 0
+  CREATED = 1
+  RUNNING = 2
+  STOPPED = 3
+
 
 class Container:
   def __init__(
@@ -71,3 +79,7 @@ class Container:
   def delete(self) -> None:
     self.__provider.delete(self.name())
     self.__image.delete()
+
+  @staticmethod
+  def Status(name: str) -> ContainerStatus:
+    return ContainerStatus.INVALID

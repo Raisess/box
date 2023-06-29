@@ -1,9 +1,7 @@
-#! /usr/bin/env python3
-
-import sys
-
-import uvicorn
 from fastapi import FastAPI
+from pydantic import BaseModel
+
+from context import Context, Container
 
 app = FastAPI(title="Box Runner")
 
@@ -12,8 +10,47 @@ def ping() -> str:
   return "pong"
 
 
-if __name__ == "__main__":
-  port = sys.argv[1] if len(sys.argv) > 1 else 8000
-  host = sys.argv[2] if len(sys.argv) > 2 else "127.0.0.1"
+class ContainerModel(BaseModel):
+  command: str | None = None
+  envs: list
+  image: str
+  name: str
+  options: list
+  ports: list
+  volumes: list
 
-  uvicorn.run(app, host=host, port=port)
+
+def init_container(body: ContainerModel) -> Container:
+  data = body.dict()
+  return Context.PrepareContainer(
+    name=data.get("name"),
+    image_name=data.get("image"),
+    command=data.get("command"),
+    envs=data.get("envs"),
+    volumes=data.get("volumes"),
+    ports=data.get("ports"),
+    options=data.get("options"),
+  )
+
+
+@app.post("/container", status_code=201)
+def create_container(body: ContainerModel) -> None:
+  container = init_container(body)
+  container.create()
+
+
+@app.put("/container")
+def update_container(body: ContainerModel) -> None:
+  container = init_container(body)
+  container.update()
+
+
+@app.delete("/container")
+def delete_container(body: ContainerModel) -> None:
+  container = init_container(body)
+  container.delete()
+
+
+@app.get("/container/{name}")
+def check_container(name: str) -> dict:
+  return { "status": Container.Status(name).value }
