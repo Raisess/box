@@ -39,10 +39,17 @@ def create_container(body: ContainerModel) -> None:
   container.create()
 
 
-@app.put("/container")
-def update_container(body: ContainerModel) -> None:
+@app.put("/container/{action}")
+def update_container(action: str, body: ContainerModel) -> None:
   container = init_container(body)
-  container.update()
+  if action == "update":
+    container.update()
+  elif action == "start":
+    container.start()
+  elif action == "stop":
+    container.stop()
+  else:
+    raise Exception("Invalid action")
 
 
 @app.delete("/container")
