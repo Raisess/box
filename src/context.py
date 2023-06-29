@@ -1,23 +1,6 @@
-import os
-
-from api.base import Api
-from api.docker import Docker
-from api.podman import Podman
+from api.factory import ProviderFactory
 from container import Container, Env, Option, Port, Volume
 from image import Image
-
-API = os.getenv("API") or "podman"
-
-class ProviderFactory:
-  @staticmethod
-  def Get(name: str) -> Api:
-    if name == "podman":
-      return Podman()
-    elif name == "docker":
-      return Docker()
-    else:
-      raise Exception("Invalid provider")
-
 
 class Context:
   @staticmethod
@@ -30,7 +13,7 @@ class Context:
     ports: list[Port] = [],
     options: list[Option] = []
   ) -> Container:
-    provider = ProviderFactory.Get(API)
+    provider = ProviderFactory.Get()
     image = Image(provider.Image(), image_name)
     container = Container(provider.Container(), name, image, command)
     for env in envs:

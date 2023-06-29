@@ -12,6 +12,9 @@ class Api:
     def stop(self, name: str) -> None:
       raise NotImplemented()
 
+    def inspect(self, name: str) -> dict:
+      raise NotImplemented()
+
 
   class Image:
     def pull(self, name: str, version: str) -> None:

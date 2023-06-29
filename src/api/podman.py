@@ -4,21 +4,26 @@ from util.shell import Shell
 class Podman(Api):
   class Container(Api.Container):
     def create(self, name: str, image: str, command: str, args: list[str]) -> None:
-      Shell.Execute(f"podman container create --name {name} {' '.join(args)} {image} {command}")
+      Shell.ExecuteTTY(f"podman container create --name {name} {' '.join(args)} {image} {command}")
 
     def delete(self, name: str) -> None:
-      Shell.Execute(f"podman container rm {name}")
+      Shell.ExecuteTTY(f"podman container rm {name}")
 
     def start(self, name: str) -> None:
-      Shell.Execute(f"podman container start {name}")
+      Shell.ExecuteTTY(f"podman container start {name}")
 
     def stop(self, name: str) -> None:
-      Shell.Execute(f"podman container stop {name}")
+      Shell.ExecuteTTY(f"podman container stop {name}")
+
+    def inspect(self, name: str) -> dict:
+      import json
+      data = json.loads(Shell.Execute(f"podman container inspect {name}"))
+      return data[0]
 
 
   class Image(Api.Image):
     def pull(self, name: str, version: str) -> None:
-      Shell.Execute(f"podman image pull {name}:{version}")
+      Shell.ExecuteTTY(f"podman image pull {name}:{version}")
 
     def delete(self, name: str) -> None:
-      Shell.Execute(f"podman image rm {name}")
+      Shell.ExecuteTTY(f"podman image rm {name}")
