@@ -61,9 +61,7 @@ class Context:
 
   def update(self) -> None:
     for container in self.__containers:
-      container.stop()
-      container.delete()
-      container.create()
+      container.update()
 
   def delete(self) -> None:
     for container in self.__containers:

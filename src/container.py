@@ -60,6 +60,11 @@ class Container:
   def start(self) -> None:
     self.__provider.start(self.name())
 
+  def update(self) -> None:
+    self.stop()
+    self.delete()
+    self.create()
+
   def stop(self) -> None:
     self.__provider.stop(self.name())
 
