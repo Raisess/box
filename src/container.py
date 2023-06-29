@@ -13,7 +13,9 @@ class ContainerStatus(Enum):
   INVALID = 0
   CREATED = 1
   RUNNING = 2
-  STOPPED = 3
+  PAUSED = 3
+  RESTARTING = 4
+  STOPPED = 5
 
 
 class Container:
@@ -82,4 +84,18 @@ class Container:
 
   @staticmethod
   def Status(name: str) -> ContainerStatus:
-    return ContainerStatus.INVALID
+    from api.factory import ProviderFactory
+
+    provider = ProviderFactory.Get()
+    container = provider.Container()
+    data = container.inspect(name)
+    plain_status = data["State"]["Status"]
+    states = {
+      "created": ContainerStatus.CREATED,
+      "running": ContainerStatus.RUNNING,
+      "paused": ContainerStatus.PAUSED,
+      "restarting": ContainerStatus.RESTARTING,
+      "stopped": ContainerStatus.STOPPED,
+    }
+
+    return states.get(plain_status) or ContainerStatus.INVALID
