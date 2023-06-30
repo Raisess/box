@@ -57,10 +57,12 @@ def create_container(body: ContainerModel) -> None:
 @app.put("/container/{action}")
 def update_container(action: str, body: ContainerModel) -> None:
   container = init_container(body)
-  if action == "update":
-    container.update()
-  elif action == "start":
+  if action == "start":
     container.start()
+  elif action == "restart":
+    container.restart()
+  elif action == "update":
+    container.update()
   elif action == "stop":
     container.stop()
   else:

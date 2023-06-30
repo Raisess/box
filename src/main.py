@@ -112,8 +112,7 @@ class Restart(Command):
     file_path = args[0]
     container_name = args[1] if len(args) > 1 else None
     context = init_context(file_path, container_name)
-    context.stop()
-    context.start()
+    context.restart()
 
 
 class Serve(Command):

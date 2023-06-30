@@ -38,6 +38,10 @@ class Context:
     for container in self.__containers:
       container.start()
 
+  def restart(self) -> None:
+    for container in self.__containers:
+      container.restart()
+
   def stop(self) -> None:
     for container in self.__containers:
       container.stop()
