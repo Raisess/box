@@ -1,9 +1,24 @@
-from fastapi import FastAPI
+import os
+
+from fastapi import FastAPI, Request
 from pydantic import BaseModel
 
 from context import Context, Container
 
+API_KEY = os.getenv("API_KEY")
+
 app = FastAPI(title="Box Runner")
+
+@app.middleware("http")
+async def before_request(req: Request, next):
+  key = req.headers.get("Key")
+  if API_KEY:
+    if not key or key != API_KEY:
+      raise Exception("Invalid key")
+
+  res = await next(req)
+  return res
+
 
 @app.get("/ping")
 def ping() -> str:
