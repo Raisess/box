@@ -13,6 +13,9 @@ class Image:
   def version(self) -> str:
     return self.__version
 
+  def full_name(self) -> str:
+    return f"{self.__name}:{self.__version}"
+
   def pull(self) -> None:
     self.__provider.pull(self.name(), self.version())
 

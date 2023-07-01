@@ -62,7 +62,7 @@ class Container:
     self.__image.pull()
     self.__provider.create(
       self.name(),
-      self.__image.name(),
+      self.__image.full_name(),
       self.__command or "",
       [*envs, *volumes, *ports, *options]
     )
