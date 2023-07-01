@@ -92,14 +92,17 @@ class Container:
 
     provider = ProviderFactory.Get()
     container = provider.Container()
-    data = container.inspect(name)
-    plain_status = data["State"]["Status"]
-    states = {
-      "created": ContainerStatus.CREATED,
-      "running": ContainerStatus.RUNNING,
-      "paused": ContainerStatus.PAUSED,
-      "restarting": ContainerStatus.RESTARTING,
-      "stopped": ContainerStatus.STOPPED,
-    }
+    try:
+      data = container.inspect(name)
+      plain_status = data["State"]["Status"]
+      states = {
+        "created": ContainerStatus.CREATED,
+        "running": ContainerStatus.RUNNING,
+        "paused": ContainerStatus.PAUSED,
+        "restarting": ContainerStatus.RESTARTING,
+        "stopped": ContainerStatus.STOPPED,
+      }
 
-    return states.get(plain_status) or ContainerStatus.INVALID
+      return states.get(plain_status) or ContainerStatus.INVALID
+    except:
+      return ContainerStatus.INVALID
