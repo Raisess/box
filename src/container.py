@@ -16,6 +16,7 @@ class ContainerStatus(Enum):
   PAUSED = 3
   RESTARTING = 4
   STOPPED = 5
+  EXITED = 6
 
 
 class Container:
@@ -101,6 +102,7 @@ class Container:
         "paused": ContainerStatus.PAUSED,
         "restarting": ContainerStatus.RESTARTING,
         "stopped": ContainerStatus.STOPPED,
+        "exited": ContainerStatus.EXITED,
       }
 
       return states.get(plain_status) or ContainerStatus.INVALID
