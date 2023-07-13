@@ -88,6 +88,19 @@ class Container:
     self.__image.delete()
 
   @staticmethod
+  def Logs(name: str, since: str | None, until: str | None) -> str:
+    from api.factory import ProviderFactory
+
+    provider = ProviderFactory.Get()
+    container = provider.Container()
+    args = []
+    if since:
+      args.append(f"--since {since}")
+    if until:
+      args.append(f"--until {until}")
+    return container.logs(name, args)
+
+  @staticmethod
   def Status(name: str) -> ContainerStatus:
     from api.factory import ProviderFactory
 

@@ -15,6 +15,9 @@ class Docker(Api):
     def stop(self, name: str) -> None:
       Shell.ExecuteTTY(f"docker container stop {name}")
 
+    def logs(self, name: str, args: list[str]) -> str:
+      return Shell.Execute(f"podman container logs {' '.join(args)} {name}")
+
     def inspect(self, name: str) -> dict:
       import json
       data = json.loads(Shell.Execute(f"docker container inspect {name}"))

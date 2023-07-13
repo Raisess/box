@@ -12,6 +12,9 @@ class Api:
     def stop(self, name: str) -> None:
       raise NotImplemented()
 
+    def logs(self, name: str, args: list[str]) -> str:
+      raise NotImplemented()
+
     def inspect(self, name: str) -> dict:
       raise NotImplemented()
 

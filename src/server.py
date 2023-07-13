@@ -75,6 +75,11 @@ def delete_container(body: ContainerModel) -> None:
   container.delete()
 
 
-@app.get("/container/{name}")
-def check_container(name: str) -> dict:
+@app.get("/container/{name}/logs")
+def container_status(name: str, since: str = None, until: str = None) -> dict:
+  return { "logs": Container.Logs(name, since, until) }
+
+
+@app.get("/container/{name}/status")
+def container_status(name: str) -> dict:
   return { "status": Container.Status(name).value }
