@@ -18,6 +18,11 @@ class Podman(Api):
     def logs(self, name: str, args: list[str]) -> str:
       return Shell.Execute(f"podman container logs {' '.join(args)} {name}")
 
+    def stats(self, name: str) -> dict:
+      import json
+      data = json.loads(Shell.Execute(f"podman container stats {name} --format=json --no-stream"))
+      return data[0]
+
     def inspect(self, name: str) -> dict:
       import json
       data = json.loads(Shell.Execute(f"podman container inspect {name}"))

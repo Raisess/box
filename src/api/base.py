@@ -15,6 +15,9 @@ class Api:
     def logs(self, name: str, args: list[str]) -> str:
       raise NotImplemented()
 
+    def stats(self, name: str) -> dict:
+      raise NotImplemented()
+
     def inspect(self, name: str) -> dict:
       raise NotImplemented()
 

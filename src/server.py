@@ -80,6 +80,11 @@ def container_status(name: str, since: str = None, until: str = None) -> dict:
   return { "logs": Container.Logs(name, since, until) }
 
 
+@app.get("/container/{name}/stats")
+def container_status(name: str) -> dict:
+  return { "stats": Container.Stats(name) }
+
+
 @app.get("/container/{name}/status")
 def container_status(name: str) -> dict:
   return { "status": Container.Status(name).value }

@@ -101,6 +101,15 @@ class Container:
     return container.logs(name, args)
 
   @staticmethod
+  def Stats(name: str) -> dict:
+    from api.factory import ProviderFactory
+
+    provider = ProviderFactory.Get()
+    container = provider.Container()
+    data = container.stats(name)
+    return data
+
+  @staticmethod
   def Status(name: str) -> ContainerStatus:
     from api.factory import ProviderFactory
 
