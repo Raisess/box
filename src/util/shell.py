@@ -4,8 +4,12 @@ import subprocess
 class Shell:
   @staticmethod
   def ExecuteTTY(cmd: str) -> None:
-    os.system(cmd)
+    exit_code = os.system(cmd)
 
   @staticmethod
   def Execute(cmd: str) -> str:
-    return subprocess.getoutput(cmd)
+    [exit_code, output] = subprocess.getstatusoutput(cmd)
+    if exit_code != 0:
+      raise Exception(f"Command failed to execute: {cmd}")
+
+    return output

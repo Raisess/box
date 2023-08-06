@@ -129,4 +129,4 @@ class Container:
 
       return states.get(plain_status) or ContainerStatus.INVALID
     except:
-      return ContainerStatus.INVALID
+      return ContainerStatus.EXITED
