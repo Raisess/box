@@ -3,8 +3,8 @@ import subprocess
 
 class Shell:
   @staticmethod
-  def ExecuteTTY(cmd: str) -> None:
-    exit_code = os.system(cmd)
+  def ExecuteTTY(cmd: str) -> int:
+    return os.system(cmd)
 
   @staticmethod
   def Execute(cmd: str) -> str:

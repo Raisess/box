@@ -127,6 +127,6 @@ class Container:
         "exited": ContainerStatus.EXITED,
       }
 
-      return states.get(plain_status) or ContainerStatus.INVALID
+      return states.get(plain_status) or ContainerStatus.EXITED
     except:
-      return ContainerStatus.EXITED
+      return ContainerStatus.INVALID
