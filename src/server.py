@@ -88,3 +88,13 @@ def container_status(name: str) -> dict:
 @app.get("/container/{name}/status")
 def container_status(name: str) -> dict:
   return { "status": Container.Status(name).value }
+
+
+if __name__ == "__main__":
+  import sys
+  import uvicorn
+
+  port = int(sys.argv[1]) if len(sys.argv) > 1 else 8000
+  host = sys.argv[2] if len(sys.argv) > 2 else "localhost"
+
+  uvicorn.run(app, host=host, port=port)
