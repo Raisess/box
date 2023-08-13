@@ -85,7 +85,6 @@ class Container:
 
   def delete(self) -> None:
     self.__provider.delete(self.name())
-    self.__image.delete()
 
   @staticmethod
   def Logs(name: str, since: str | None, until: str | None) -> str:
