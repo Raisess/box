@@ -7,7 +7,7 @@ class Podman(Api):
       Shell.ExecuteTTY(f"podman container create --name {name} {' '.join(args)} {image} {command}")
 
     def delete(self, name: str) -> None:
-      Shell.ExecuteTTY(f"podman container rm -v {name}")
+      Shell.ExecuteTTY(f"podman container rm {name}")
 
     def start(self, name: str) -> None:
       Shell.ExecuteTTY(f"podman container start {name}")
