@@ -43,9 +43,6 @@ class Container:
     self.__envs.append(value)
 
   def set_volume(self, value: Volume) -> None:
-    if not os.path.isdir(value[0]) and not os.path.isfile(value[0]) and not os.path.islink(value[0]):
-      raise Exception(f"Invalid source path: {value[0]}")
-
     self.__volumes.append(value)
 
   def set_port(self, value: Port) -> None:

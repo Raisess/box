@@ -130,5 +130,13 @@ class Serve(Command):
 
 
 if __name__ == "__main__":
-  cli = CLI("box", [Create(), Start(), Stop(), Delete(), Update(), Restart(), Serve()])
+  cli = CLI("box", [
+    Create(),
+    Start(),
+    Stop(),
+    Delete(),
+    Update(),
+    Restart(),
+    Serve()
+  ])
   cli.handle()
