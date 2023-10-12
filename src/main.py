@@ -55,9 +55,10 @@ class Create(Command):
 
   def handle(self, args: list[str]) -> None:
     file_path = args[0]
-    container_name = args[1] if len(args) > 1 else None
-    context = init_context(file_path, container_name)
-    context.create()
+    container_names = args[1:] if len(args) > 1 else None
+    for container_name in container_names:
+      context = init_context(file_path, container_name)
+      context.create()
 
 
 class Start(Command):
@@ -66,9 +67,10 @@ class Start(Command):
 
   def handle(self, args: list[str]) -> None:
     file_path = args[0]
-    container_name = args[1] if len(args) > 1 else None
-    context = init_context(file_path, container_name)
-    context.start()
+    container_names = args[1:] if len(args) > 1 else None
+    for container_name in container_names:
+      context = init_context(file_path, container_name)
+      context.start()
 
 
 class Stop(Command):
@@ -77,9 +79,10 @@ class Stop(Command):
 
   def handle(self, args: list[str]) -> None:
     file_path = args[0]
-    container_name = args[1] if len(args) > 1 else None
-    context = init_context(file_path, container_name)
-    context.stop()
+    container_names = args[1:] if len(args) > 1 else None
+    for container_name in container_names:
+      context = init_context(file_path, container_name)
+      context.stop()
 
 
 class Update(Command):
@@ -88,9 +91,10 @@ class Update(Command):
 
   def handle(self, args: list[str]) -> None:
     file_path = args[0]
-    container_name = args[1] if len(args) > 1 else None
-    context = init_context(file_path, container_name)
-    context.update()
+    container_names = args[1:] if len(args) > 1 else None
+    for container_name in container_names:
+      context = init_context(file_path, container_name)
+      context.update()
 
 
 class Delete(Command):
@@ -99,9 +103,10 @@ class Delete(Command):
 
   def handle(self, args: list[str]) -> None:
     file_path = args[0]
-    container_name = args[1] if len(args) > 1 else None
-    context = init_context(file_path, container_name)
-    context.delete()
+    container_names = args[1:] if len(args) > 1 else None
+    for container_name in container_names:
+      context = init_context(file_path, container_name)
+      context.delete()
 
 
 class Restart(Command):
@@ -110,9 +115,10 @@ class Restart(Command):
 
   def handle(self, args: list[str]) -> None:
     file_path = args[0]
-    container_name = args[1] if len(args) > 1 else None
-    context = init_context(file_path, container_name)
-    context.restart()
+    container_names = args[1:] if len(args) > 1 else None
+    for container_name in container_names:
+      context = init_context(file_path, container_name)
+      context.restart()
 
 
 class Serve(Command):
