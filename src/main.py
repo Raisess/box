@@ -10,18 +10,12 @@ class BaseCommand(Command):
   def __init__(self, command: str, description: str, args_len: int):
     super().__init__(command, description, args_len)
 
-  def _init_context(self, args: list[str]) -> list[Context]:
+  def _init_context(self, args: list[str]) -> Context:
     file_path = args[0]
     container_names = args[1:] if len(args) >= 2 else None
-    if not container_names:
-      return [self.__handle(file_path)]
+    return self.__handle(file_path, container_names)
 
-    return [
-      self.__handle(file_path, container_name)
-      for container_name in container_names
-    ]
-
-  def __handle(self, file_path: str, container_name: str = None) -> Context:
+  def __handle(self, file_path: str, container_names: list[str] = None) -> Context:
     if not os.path.isfile(file_path):
       raise Exception("Provided file do not exists")
     if not file_path.endswith(".json"):
@@ -33,19 +27,19 @@ class BaseCommand(Command):
       if type(data) != list:
         raise Exception("Invalid file format")
 
-      if container_name:
-        for item in data:
-          if container_name == item.get("name"):
-            containers.append(Context.PrepareContainer(
-              name=item.get("name"),
-              image_name=item.get("image"),
-              command=item.get("command"),
-              envs=item.get("envs") or [],
-              volumes=item.get("volumes") or [],
-              ports=item.get("ports") or [],
-              options=item.get("options") or []
-            ))
-            continue
+      if container_names:
+        for container_name in container_names:
+          for item in data:
+            if container_name == item.get("name"):
+              containers.append(Context.PrepareContainer(
+                name=item.get("name"),
+                image_name=item.get("image"),
+                command=item.get("command"),
+                envs=item.get("envs") or [],
+                volumes=item.get("volumes") or [],
+                ports=item.get("ports") or [],
+                options=item.get("options") or []
+              ))
       else:
         for item in data:
           containers.append(Context.PrepareContainer(
@@ -69,8 +63,8 @@ class Create(BaseCommand):
     super().__init__("create", "Create new containers", args_len=1)
 
   def handle(self, args: list[str]) -> None:
-    for context in self._init_context(args):
-      context.create()
+    context = self._init_context(args)
+    context.create()
 
 
 class Start(BaseCommand):
@@ -78,8 +72,8 @@ class Start(BaseCommand):
     super().__init__("start", "Start containers", args_len=1)
 
   def handle(self, args: list[str]) -> None:
-    for context in self._init_context(args):
-      context.start()
+    context = self._init_context(args)
+    context.start()
 
 
 class Stop(BaseCommand):
@@ -87,8 +81,8 @@ class Stop(BaseCommand):
     super().__init__("stop", "Stop containers", args_len=1)
 
   def handle(self, args: list[str]) -> None:
-    for context in self._init_context(args):
-      context.stop()
+    context = self._init_context(args)
+    context.stop()
 
 
 class Update(BaseCommand):
@@ -96,8 +90,8 @@ class Update(BaseCommand):
     super().__init__("update", "Update containers", args_len=1)
 
   def handle(self, args: list[str]) -> None:
-    for context in self._init_context(args):
-      context.update()
+    context = self._init_context(args)
+    context.update()
 
 
 class Delete(BaseCommand):
@@ -105,8 +99,8 @@ class Delete(BaseCommand):
     super().__init__("delete", "Delete containers", args_len=1)
 
   def handle(self, args: list[str]) -> None:
-    for context in self._init_context(args):
-      context.delete()
+    context = self._init_context(args)
+    context.delete()
 
 
 class Restart(BaseCommand):
@@ -114,8 +108,8 @@ class Restart(BaseCommand):
     super().__init__("restart", "Restart containers", args_len=1)
 
   def handle(self, args: list[str]) -> None:
-    for context in self._init_context(args):
-      context.restart()
+    context = self._init_context(args)
+    context.restart()
 
 
 class Serve(Command):
